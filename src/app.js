@@ -1,45 +1,23 @@
 import express from "express";
-import { MongoClient, ObjectId } from "mongodb";
-import dotenv from "dotenv";
 import cors from "cors";
 import joi from "joi";
 import bcrypt from "bcrypt";
 import { v4 as uuidV4 } from "uuid";
-
-
+import autherouter from './routes/auth.router.js';
 
 const app = express();
-dotenv.config();
 app.use(cors());
 app.use(express.json());
-
-const mongoClient = new MongoClient(process.env.MONGO_URI);
-const db = mongoClient.db("iFit");
-
-try {
-    await mongoClient.connect();
-  } catch (err) {
-    console.log(err);
-  }
-
- app.post("/login", async(req,res) => {
-    const user = req.body;
-    try{
-     await db.collection("user").insertOne(user);
-     res.sendStatus(201);
-    }catch(erro){
-        console.log(erro)
-    }
+app.use(autherouter);
+  
+  export const userSchema = joi.object({
+  name: joi.string().min(2).required(),
+  email: joi.string().email().required(),
+  phone: joi.string().length(11).pattern(/^[0-9]+$/).required(),
+  password: joi.string().alphanum().min(6).max(10).required(),
  })
 
- app.get("/login", async(req,res) => {
-    try{
-     const response = await db.collection("user").find().toArray();
-     res.send(response);
-    }catch(erro){
-        console.log(erro)
-    }
- })
+
 
 
 const port = process.env.PORT || 5000;
