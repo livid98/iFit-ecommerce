@@ -6,6 +6,7 @@ import cors from "cors";
 // import bcrypt from "bcrypt";
 // import { v4 as uuidV4 } from "uuid";
 import {
+  deleteProducts,
   getProducts,
   postProducts,
 } from "../controllers/productsController.js";
@@ -48,6 +49,8 @@ app.get("/login", async (req, res) => {
 app.get("/products", getProducts);
 
 app.post("/products", postProducts);
+
+app.delete("/products", deleteProducts);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listen on port: ${port}`));
