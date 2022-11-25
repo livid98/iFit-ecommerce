@@ -4,7 +4,6 @@ import joi from "joi";
 import bcrypt from "bcrypt";
 import { v4 as uuidV4 } from "uuid";
 import autherouter from './routes/auth.router.js';
-
 const app = express();
 app.use(cors());
 app.use(express.json());
