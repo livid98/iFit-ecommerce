@@ -1,4 +1,4 @@
-import { productsCollection } from "../src/app.js";
+import { productsCollection } from "../database/db.js";
 
 export async function getProducts(req, res) {
   try {
@@ -30,11 +30,6 @@ export async function deleteProducts(req, res) {
   const { name } = req.headers;
   try {
     const products = await productsCollection.findOne({ name });
-    if (!products) {
-      res.sendStatus(400);
-      return;
-    }
-
     await productsCollection.deleteOne({ name: products.name });
     res.sendStatus(201);
   } catch (err) {
