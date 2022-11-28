@@ -33,3 +33,20 @@ export async function Login(req, res) {
         res.sendStatus(500)
     }
 }
+
+export async function deleteSession (req, res){
+    const { authorization } = req.headers;
+    const token = authorization?.replace("Bearer ", "");
+  
+    try {
+      const session = await sessionCollection.findOne({ token });
+      if (!session) {
+        res.sendStatus(404);
+        return;
+      }
+      await sessionCollection.deleteOne({ _id: session._id });
+      res.sendStatus(201);
+    } catch (err) {
+      console.log(err);
+    }
+}
